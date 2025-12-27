@@ -31,23 +31,3 @@ SurfCharset = girl_surf
 DiveCharset = girl_surf
 FishCharset = girl_fish_offset
 SurfFishCharset = girl_fish_offset
-#-------------------------------
-[3]
-TrainerType = DETECTIVE_BRUNO
-WalkCharset = trainer_DETECTIVE_BRUNO
-RunCharset = trainer_DETECTIVE_BRUNO
-CycleCharset = trainer_DETECTIVE_BRUNO
-SurfCharset = trainer_DETECTIVE_BRUNO
-DiveCharset = trainer_DETECTIVE_BRUNO
-FishCharset = trainer_DETECTIVE_BRUNO
-SurfFishCharset = trainer_DETECTIVE_BRUNO
-#-------------------------------
-[4]
-TrainerType = CINTIA
-WalkCharset = trainer_CINTIA
-RunCharset = trainer_CINTIA
-CycleCharset = trainer_CINTIA
-SurfCharset = trainer_CINTIA
-DiveCharset = trainer_CINTIA
-FishCharset = trainer_CINTIA
-SurfFishCharset = trainer_CINTIA
