@@ -47,14 +47,14 @@ class PokemonPartyScreen
       can_access_storage = true
     end
     @scene.pbStartScene(@party,
-                        (@party.length > 1) ? _INTL("Elige un Pokémon.") : _INTL("Elige un Pokémon o cancela."),
+                        (@party.length > 1) ? _INTL("Choose a Pokémon.") : _INTL("Choose Pokémon or cancel."),
                         nil, false, can_access_storage)
     loop do
-      @scene.pbSetHelpText((@party.length > 1) ? _INTL("Elige un Pokémon.") : _INTL("Elige un Pokémon o cancela."))
+      @scene.pbSetHelpText((@party.length > 1) ? _INTL("Choose a Pokémon.") : _INTL("Choose Pokémon or cancel."))
       party_idx = @scene.pbChoosePokemon(false, -1, 1)
       break if (party_idx.is_a?(Numeric) && party_idx < 0) || (party_idx.is_a?(Array) && party_idx[1] < 0)
       if party_idx.is_a?(Array) && party_idx[0] == 1
-        @scene.pbSetHelpText(_INTL("¿Mover a dónde?"))
+        @scene.pbSetHelpText(_INTL("Move to where?"))
         old_party_idx = party_idx[1]
         party_idx = @scene.pbChoosePokemon(true, -1, 2)
         pbSwitch(old_party_idx, party_idx) if party_idx >= 0 && party_idx != old_party_idx
@@ -73,20 +73,18 @@ class PokemonPartyScreen
         end
         commands.push(hash)
       end
-      command_list.push(_INTL("Cancelar"))
+      command_list.push(_INTL("Cancel"))
       if !pkmn.egg? && show_field_moves
         insert_index = ($DEBUG) ? 2 : 1
-        if Settings::SHOW_HMS_IN_PARTY_MENU
-          pkmn.moves.each_with_index do |move, i|
-            next if !HiddenMoveHandlers.hasHandler(move.id) &&
-                    ![:MILKDRINK, :SOFTBOILED].include?(move.id)
-            command_list.insert(insert_index, [move.name, :Blue])
-            commands.insert(insert_index, i)
-            insert_index += 1
-          end
+        pkmn.moves.each_with_index do |move, i|
+          next if !HiddenMoveHandlers.hasHandler(move.id) &&
+                  ![:MILKDRINK, :SOFTBOILED].include?(move.id)
+          command_list.insert(insert_index, [move.name, :Blue])
+          commands.insert(insert_index, i)
+          insert_index += 1
         end
       end
-      choice = @scene.pbShowCommands(_INTL("¿Qué hacer con {1}?", pkmn.name), command_list)
+      choice = @scene.pbShowCommands(_INTL("Do what with {1}?", pkmn.name), command_list)
       next if choice < 0 || choice >= commands.length
       case commands[choice]
       when Hash
@@ -101,10 +99,10 @@ class PokemonPartyScreen
         if [:MILKDRINK, :SOFTBOILED].include?(move.id)
           amt = [(pkmn.totalhp / 5).floor, 1].max
           if pkmn.hp <= amt
-            pbDisplay(_INTL("No tiene suficientes PS..."))
+            pbDisplay(_INTL("Not enough HP..."))
             next
           end
-          @scene.pbSetHelpText(_INTL("¿Usar en que Pokémon?"))
+          @scene.pbSetHelpText(_INTL("Use on which Pokémon?"))
           old_party_idx = party_idx
           loop do
             @scene.pbPreSelect(old_party_idx)
@@ -113,15 +111,15 @@ class PokemonPartyScreen
             newpkmn = @party[party_idx]
             movename = move.name
             if party_idx == old_party_idx
-              pbDisplay(_INTL("¡{1} no puede usar {2} en si mismo!", pkmn.name, movename))
+              pbDisplay(_INTL("{1} can't use {2} on itself!", pkmn.name, movename))
             elsif newpkmn.egg?
-              pbDisplay(_INTL("¡{1} no puede ser usado en un huevo!", movename))
+              pbDisplay(_INTL("{1} can't be used on an Egg!", movename))
             elsif newpkmn.fainted? || newpkmn.hp == newpkmn.totalhp
-              pbDisplay(_INTL("{1} no puede ser usado en ese Pokémon.", movename))
+              pbDisplay(_INTL("{1} can't be used on that Pokémon.", movename))
             else
               pkmn.hp -= amt
               hpgain = pbItemRestoreHP(newpkmn, amt)
-              @scene.pbDisplay(_INTL("Los PS de {1} fueron restaurados en {2} puntos.", newpkmn.name, hpgain))
+              @scene.pbDisplay(_INTL("{1}'s HP was restored by {2} points.", newpkmn.name, hpgain))
               pbRefresh
             end
             break if pkmn.hp <= amt
@@ -140,7 +138,7 @@ class PokemonPartyScreen
                 return [pkmn, move.id]
               end
               @scene.pbStartScene(
-                @party, (@party.length > 1) ? _INTL("Elige un Pokémon.") : _INTL("Elige un Pokémon o cancela.")
+                @party, (@party.length > 1) ? _INTL("Choose a Pokémon.") : _INTL("Choose Pokémon or cancel.")
               )
               next
             end
@@ -165,7 +163,7 @@ class PokemonEvolutionScene
     new_pkmn.markings   = []
     new_pkmn.poke_ball  = :POKEBALL
     new_pkmn.item       = nil
-    if PluginManager.installed?("[MUI] Enhanced Pokemon UI")
+	if PluginManager.installed?("[MUI] Enhanced Pokemon UI")
       new_pkmn.shiny_leaf = 0
       new_pkmn.resetLegacyData
       new_pkmn.legacy_data.each_key do |key|
